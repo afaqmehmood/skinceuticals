@@ -1,0 +1,191 @@
+{% liquid 
+    assign s = section.settings
+    assign full_width = s.full_width
+    assign image = s.image
+    assign pre_heading = s.pre_heading
+    assign heading = s.heading
+    assign paragraph = s.paragraph
+    assign cta_text = s.cta_text
+    assign cta_url = s.cta_url
+    assign width = s.width
+    assign text_color = s.text_color
+    assign button_color = s.button_color
+    assign button_border = s.button_border
+    assign button_text = s.button_text
+    assign text_align = s.text_align
+    %}
+    <style>
+        {% if image != blank %}
+        #shopify-section-{{ section.id }} .hero-wrapper{
+            background-image: url({{ image | img_url: 'master' }});
+            background-size: cover;
+            background-position: center;
+            {% if section.settings.margin == true %}
+            margin-top: 60px;
+            {%endif%}
+        }
+        {% endif %}
+        {% if width != 0 %}
+        @media screen and (min-width: 992px){
+            #shopify-section-{{ section.id }} .hero-wrapper{
+                width: {{width}}px !important;
+            }
+        }
+        {% endif %}
+        #shopify-section-{{ section.id }} .hero-wrapper .content-wrapper{
+            color: {{ text_color }};
+        }
+        #shopify-section-{{ section.id }} .hero-wrapper .content-wrapper h3, #shopify-section-{{ section.id }} .hero-wrapper .content-wrapper h1, #shopify-section-{{ section.id }} .hero-wrapper .content-wrapper p{
+            color: inherit;
+        }
+        #shopify-section-{{ section.id }} .hero-wrapper .content-wrapper a.btn{
+            background-color: {{ button_color }};
+            color: {{ button_text }};
+            border-color: {{ button_border }};
+        }
+    </style>
+    <div class="hero-wrapper d-block {% if full_width == true %} fluid-container {%else%} container{% endif %}">
+        <div class="content-wrapper {{ text_align }} p-5">
+            {% if pre_heading != blank %}
+            <h3 class="pre-heading mb-2">{{ pre_heading }}</h3>
+            {% endif %}
+            {% if heading != blank %}
+            <h1 class="heading mb-3">{{ heading }}</h1>
+            {% endif %}
+            {% if paragraph != blank %}
+                <div class="paragraph mb-3">
+                    <p class="text">
+                        {{ paragraph }}
+                    </p>
+                </div>
+            {% endif %}
+            {% if cta_url != blank %}
+                <div class="btn-wrapper">
+                    <a href="{{ cta_url }}" class="btn btn-primary">{{ cta_text }}</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% schema %}
+{
+    "name": "Hero Banner",
+    "class": "hero-banner-section",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "label": "Full width",
+            "default": false
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "header",
+            "content": "Content settings"
+        },
+        {
+            "type": "text",
+            "id": "pre_heading",
+            "label": "Pre heading",
+            "default": "Pre heading"
+        },
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Heading"
+        },
+        {
+            "type": "textarea",
+            "id": "paragraph",
+            "label": "Paragraph",
+            "default": "text paragraph goes here"
+        },
+        {
+            "type": "header",
+            "content": "CTA settings"
+        },
+        {
+            "type": "text",
+            "id": "cta_text",
+            "label": "Button text",
+            "default": "Shop Now"
+        },
+        {
+            "type": "url",
+            "id": "cta_url",
+            "label": "Button link",
+            "default": "/"
+        },
+        {
+            "type": "header",
+            "content": "Styling"
+        },
+        {
+            "type": "checkbox",
+            "id": "margin",
+            "label": "Enable margin",
+            "default": true
+        },
+        {
+            "type": "number",
+            "id": "width",
+            "label": "Banner width",
+            "placeholder": "Width in pixels (i.e. 960)"
+        },
+        {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color",
+            "default": "#333"
+        },
+        {
+            "type": "color",
+            "id": "button_color",
+            "label": "Button color",
+            "default": "#f0f0f0"
+        },
+        {
+            "type": "color",
+            "id": "button_border",
+            "label": "Button border",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "button_text",
+            "label": "Button Text",
+            "default": "#fff"
+        },
+        {
+            "type": "select",
+            "id": "text_align",
+            "label": "Align text",
+            "options": [
+                {
+                    "value": "text-left",
+                    "label": "Left"
+                },
+                {
+                    "value": "text-center",
+                    "label": "Center"
+                },
+                {
+                    "value": "text-right",
+                    "label": "Right"
+                }
+            ],
+            "default": "text-left"
+        }
+    ],
+    "presets": [
+        {
+            "category": "Image",
+            "name":"Hero Banner"
+        }
+    ]
+}
+{% endschema %}

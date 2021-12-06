@@ -1,0 +1,380 @@
+{% liquid 
+    assign s = section.settings
+    assign full_width = s.full_width
+    assign bg_color = s.bg_color
+    assign link_color = s.link_color
+    assign link_hover = s.link_hover
+    assign topbar = s.topbar
+    assign topbar_content = s.topbar_content
+    assign topbar_text_color = s.topbar_text_color
+    assign topbar_bg_color = s.topbar_bg_color
+    assign logo = s.logo
+    assign secondary_logo = s.secondary_logo
+    assign searchbar = s.searchbar
+    assign right_content = s.right_content
+    assign left_content = s.left_content
+    assign primary_menu = linklists[s.primary_menu]
+    assign vertical_menu = linklists[s.vertical_menu]
+    assign mobile_menu = linklists[s.mobile_menu]
+    %}
+    <style>
+        .header {
+            background-color: {{ bg_color }};
+        }
+        .header a{
+            color: {{ link_color }} !important;
+            text-decoration: none;
+        }
+        .header a:hover{
+            color: {{ link_hover }} !important;
+        }
+        .header .header-promo{
+            background-color: {{ topbar_bg_color }};
+            color: {{ topbar_text_color }};
+        }
+        .header .header-promo p {
+            color: {{ topbar_text_color }};
+        }
+    </style>
+<div class="sidebar-menu-container position-absolute">
+    <div class="mobile-menu-wrapper position-absolute">
+        <div class="menu-container position-relative pt-5">
+            <div class="close-mobile-menu p-2 position-absolute">
+                <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-times fa-w-10 fa-2x"><path fill="currentColor" d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z" class=""></path></svg>
+            </div>
+            <div class="nav-wrapper">
+                {% for link in mobile_menu.links %}
+                    {% if link.links != blank %}
+                    <div class="accordion" id="accordion_link">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading_{{ forloop.index }}_link">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ forloop.index }}_link" aria-expanded="true" aria-controls="collapse_{{ forloop.index }}_link">
+                                {{ link.title }}
+                            </button>
+                            </h2>
+                            <div id="collapse_{{ forloop.index }}_link" class="accordion-collapse collapse" aria-labelledby="heading_{{ forloop.index }}_link" data-bs-parent="#accordion_link">
+                            <div class="accordion-body">
+                                {% for child in link.links %}
+                                {% if child.links != blank %}
+                                <div class="accordion" id="accordion_{{ forloop.index }}_child">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading_{{ forloop.index }}_child">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{forloop.index}}_child" aria-expanded="true" aria-controls="collapse_{{forloop.index}}_child">
+                                            {{ child.title }}
+                                        </button>
+                                        </h2>
+                                        <div id="collapse_{{forloop.index}}_child" class="accordion-collapse collapse" aria-labelledby="heading_{{ forloop.index }}_child" data-bs-parent="#accordion_{{ forloop.index }}_child">
+                                        <div class="accordion-body">
+                                            {% for grandChild in child.links %}
+                                            <div class="nav-item px-3 py-3">
+                                                <a href="{{grandChild.url}}" class="item-link">{{ grandChild.title }}</a>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                {% else %}
+                                <div class="nav-item px-3 py-3">
+                                    <a href="{{child.url}}" class="item-link">{{ child.title }}</a>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        {% else %}
+                    <div class="nav-item px-3 py-3">
+                        <a href="{{link.url}}" class="item-link">{{ link.title }}</a>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                <div class="nav-item px-3 py-3">
+                    <a href="/account" class="item-link">My account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="header">
+    {% if topbar == true %}
+        <div class="header-promo d-flex justify-content-center align-items-center py-2 position-relative">
+            <div class="container promo-container">
+                <div class="promo-message text-center">
+                    {{ topbar_content }}
+                </div>
+            </div>
+            <div class="icon-wrapper d-flex position-absolute">
+                {% include 'icon-close' %}
+            </div>
+            <!-- <span class="header_promo_close"></span> -->
+        </div>
+    {% endif %}
+    <div class="header-wrapper d-none d-md-block {% if full_width == true %}
+                                fluid-container px-5
+                                {% else %}
+                                container
+                            {% endif %}">
+
+        {% if left_content != blank or right_content != blank %}
+            <div class="row">
+                <div class="col-md-6 left-content text-left py-2">
+                        {% if left_content != blank %}
+                        {{ left_content }}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 right-content text-right py-2">
+                        {% if right_content != blank %}
+                        {{ right_content }}
+                        {% endif %}
+                    </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <!-- <div class="col-md-4 search-wrapper py-2 px-5">
+                
+            </div> -->
+            <div class="col-md-6 logo-wrapper text-left py-2">
+                <a href="{{ shop.url }}">
+                {% if logo != blank %}
+                    <div class="logo-img">
+                        {{ logo | img_url: 'master' | img_tag: shop.name  }}
+                    </div>
+                {% endif %}
+                </a>
+            </div>
+            <div class="col-md-6 header-links-wrapper py-2 text-right">
+                <div class="contry-selector">
+                    
+                </div>
+                {%- if shop.customer_accounts_enabled -%}
+                    <ul class="user-links">
+                        <li class="d-flex language-toggler">
+                            <a href="javascript:void(0)" class="d-inline" id="language_EN">EN</a>/
+                            <a href="javascript:void(0)" class="d-inline" id="language_FR">FR</a>
+                        </li>
+                        {% for link in linklists[section.settings.additionaL_links].links %}
+                        <li>
+                            <a href="{{ link.url }}">{{ link.title }}</a>
+                        </li>
+                        {% endfor %}
+                        
+                        <li>
+                            <a href="/account"> {{ 'customer.account.title' | t }}</a>
+                        </li>
+                    </ul>
+                {% endif %}
+                <div class="cart-container">
+                    <div class="cart-link-wrapper">
+                        <a class="cart-link" href="{{ routes.cart_url }}"><span class="cart-count-wrapper">
+                            <!-- <span class="">{{ cart.item_count }}</span> -->
+                        </span>{{ 'cart.general.title' | t }} {% include 'icon-cart' %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="menu-container d-none d-md-block mt-3">
+        <div class="container">
+            <div class="row menu-wrapper d-flex justify-content-between position-relative">
+                {% if primary_menu != blank %}
+                    <ul class="menu-list header-menu d-flex justify-content-center align-items-center w-auto">
+                        {% for link in primary_menu.links %}
+                            <li data-child-rel={{ link.title | handleize }} class="list-item py-2{% if link.links != blank %}is-parent has-submenu {% endif %}">
+                                <a href="{{ link.url }}" class="menu-link py-2 mx-3">{{ link.title }}</a>
+                                {% if link.links != blank %}
+                                    <ul class="sub-menu submenu-regular p-3">
+                                        {% for sub_link in link.links %}
+                                            <li class="list-item {% if sub_link.links != blank %}
+                                                                                    is-parent {% else %}
+                                                                                        is-child
+                                                                                    {% endif %}">
+                                                <a href="{{ sub_link.url }}" {% if sub_link.links != blank %} class="text-uppercase"{% endif %}>{{ sub_link.title }}</a>
+                                                {% if sub_link.links != blank %}
+                                                    <ul class="sub-menu px-3 py-2 child_links">
+                                                        {% for child_link in sub_link.links %}
+                                                            <li class="list-item is-child">
+                                                                <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if searchbar == true %}
+                    <div class="searchbar-inner d-flex align-items-center w-auto">
+                            <button id="search-bar-toggler" class="search-btn btn btn-primary btn-lg d-flex">
+                                 {{ 'general.search.placeholder' | t }}
+                                {% include 'icon-search' %}</button>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    <div class="header-search_form search-form-absolute position-relative bg-white p-5">
+        <div class="form-wrapper w-100 position-relative">
+            <div class="searchbar-inner d-flex align-items-center w-100">
+                <form action="/search" class="search w-100" method="get" role="search">
+                    <h1 class="d-inline w-25">{{ 'products.product.rate_visible_results' | t }} </h1>
+                    <input name="type" type="hidden" value="product">
+                    <input name="q" type="search" id="search-field" placeholder="Je Rechercher" value="{{ search.terms | escape }}" class="search-field w-75"/>
+                    <button class="search-btn" type="submit">{% include 'icon-search' %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="d-md-none mobile-header d-flex p-3 justify-content-center w-100">
+        <div class="mobile-menu-toggle px-3 py-2">
+            <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-bars fa-w-14 fa-2x">
+                <path fill="currentColor" d="M442 114H6a6 6 0 0 1-6-6V84a6 6 0 0 1 6-6h436a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6zm0 160H6a6 6 0 0 1-6-6v-24a6 6 0 0 1 6-6h436a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6zm0 160H6a6 6 0 0 1-6-6v-24a6 6 0 0 1 6-6h436a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6z" class=""></path>
+            </svg>
+        </div>
+        <div class="mobile-logo px-3 py-2">
+            <a href="{{ shop.url }}" class="header-logo">
+                {% unless secondary_logo == blank %}
+            {{ secondary_logo | img_url: 'master' | img_tag:shop.name }}
+            {%else%}
+            <h2 class="shop-title text-center">{{ shop.name }}</h2>
+            {% endunless %}
+            </a>
+        </div>
+        <div class="cart-link-wrapper px-3 py-2">
+            <a class="cart-link-mobile" href="{{ routes.cart_url }}">
+                <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="shopping-bag" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-shopping-bag fa-w-14 fa-2x">
+                    <path fill="currentColor" d="M352 128C352 57.421 294.579 0 224 0 153.42 0 96 57.421 96 128H0v304c0 44.183 35.817 80 80 80h288c44.183 0 80-35.817 80-80V128h-96zM224 32c52.935 0 96 43.065 96 96H128c0-52.935 43.065-96 96-96zm192 400c0 26.467-21.533 48-48 48H80c-26.467 0-48-21.533-48-48V160h64v48c0 8.837 7.164 16 16 16s16-7.163 16-16v-48h192v48c0 8.837 7.163 16 16 16s16-7.163 16-16v-48h64v272z" class=""></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Header",
+    "class": "header-section",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Header settings"
+        },
+        {
+            "type": "checkbox",
+            "id": "full_width",
+            "label": "Full width header",
+            "default": false
+        },
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background color",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "link_color",
+            "label": "Link color",
+            "default": "#000"
+        },
+        {
+            "type": "color",
+            "id": "link_hover",
+            "label": "Link hover color",
+            "default": "#333"
+        },
+        {
+            "type": "header",
+            "content": "Topbar settings"
+        },
+         
+        {
+            "type": "checkbox",
+            "id": "topbar",
+            "label": "Enable topbar",
+            "default": true
+        },
+        {
+            "type": "richtext",
+            "id": "topbar_content",
+            "label": "Topbar text",
+            "default": "<p>Topbar content goes here</p>"
+        },
+        {
+            "type": "color",
+            "id": "topbar_text_color",
+            "label": "Text color",
+            "default": "#fff"
+        },
+        {
+            "type": "color",
+            "id": "topbar_bg_color",
+            "label": "Background color",
+            "default": "#333"
+        },
+        {
+            "type": "header",
+            "content": "Header content"
+        },
+        {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo"
+        },
+        {
+            "type": "image_picker",
+            "id": "secondary_logo",
+            "label": "Secondary logo",
+            "info": "This is used for mobile header"
+        },
+        {
+            "type": "link_list",
+            "id": "additionaL_links",
+            "label": "Additional Links"
+        },
+        {
+            "type": "checkbox",
+            "id": "searchbar",
+            "label": "Enable search bar",
+            "default": true
+        },
+        {
+            "type": "richtext",
+            "id": "right_content",
+            "label": "Right side content",
+            "default": "<p>Your Right content</p>",
+            "info": "You can add text and links in this area"
+        },
+        {
+            "type": "richtext",
+            "id": "left_content",
+            "label": "Left side content",
+            "default": "<p>Your Left content</p>",
+            "info": "You can add text and links in this area"
+        },
+        {
+            "type": "link_list",
+            "id": "mobile_menu",
+            "label": "Mobile menu"
+        },
+        {
+            "type": "link_list",
+            "id": "primary_menu",
+            "label": "Main menu",
+            "default": "main-menu"
+        },
+        {
+            "type": "link_list",
+            "id": "vertical_menu",
+            "label": "Vertical menu",
+            "default": "main-menu"
+        }
+    ]
+}
+{% endschema %}

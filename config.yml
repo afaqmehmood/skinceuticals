@@ -1,0 +1,13 @@
+development:
+  password: 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
+  theme_id: "129372782816"
+  store: skinceuticals-care.myshopify.com
+  timeout: 1000s
+  ignore_files:
+    - "*.scss"
+    - readme.md
+    - gulpfile.js
+    - package.json
+    - node_modules
+    - ".gitignore"
+    - config/settings_data.json

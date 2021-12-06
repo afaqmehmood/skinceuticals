@@ -1,0 +1,147 @@
+<div data-parent={{ section.settings.parent_head | handleize }} class="mega-menu mega-menu-{{ section.id }} container" id="mega-menu__{{ section.id }}">
+    {% assign blocks = section.blocks %}
+    {% assign blocks_size = blocks | size %}
+    {% if blocks_size > 0 %}
+    <div class="row blocks-container py-5">
+        {% for block in blocks %}
+            {% assign type = block.type %}
+            {% case type %}
+                {% when "menu" %}
+                {% assign menu = linklists[block.settings.block_menu] %}
+                {% if menu != blank %}
+                <div class="menu-block col-md-3">
+                    <h4 class="menu-title">{{ menu.title }}</h4>
+                    <ul class="menu-items p-0 m-0">
+                    {% for link in menu.links %}
+                        <li class="list-item py-1 px-2">
+                            <a href="{{link.url}}">{{ link.title }}</a>
+                        </li>
+                    {% endfor %}    
+                    </ul>
+                </div>
+                {% endif %}
+                {% when "content" %}
+                {% assign bs = block.settings %}
+                {% assign image = bs.image %}
+                {% assign content = bs.content %}
+                {% assign cta_url = bs.cta_link %}
+                {% assign cta_text = bs.cta_text %}
+                <div class="content-block col-md-3">
+                    <div class="content-wrapper">
+                        {% if image != blank %}
+                        <div class="image-wrapper d-block text-center">
+                            {{ image | img_url: 'master' | img_tag }}
+                        </div>
+                        {% endif %}
+                        {% if content != blank %}
+                            <div class="content d-block my-3 text-left">
+                                {{ content }}
+                            </div>
+                        {% endif %}
+                        {% if cta_url != blank %}
+                            <div class="btn-wrapper my-4">
+                                <a class="btn text-white text-center btn-primary btn-full w-100" href="{{ cta_url }}">{{ cta_text }}</a>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                {% when "product" %}
+                {% assign product = all_products[block.settings.block_product] %}
+                {% assign product_title = product.title %}
+                {% assign product_img = product.featured_image %}
+                <div class="product-block col-md-3">
+                    <a href="{{ product.url }}" class="product-wrapper d-block">
+                        {% if product_img != blank %}
+                        <div class="image-wrapper d-block text-center">
+                            {{ product_img | img_url: 'master' | img_tag }}
+                        </div>
+                        {% endif %}
+                        {% if product_title != blank %}
+                            <div class="product-title d-block text-center">
+                                <h4 class="product-title">{{ product_title }}</h4>
+                            </div>
+                        {% endif %}
+                        {% if product_title != blank %}
+                            <div class="product-desc d-block text-center">
+                                {{ product.description | truncatewords: 15 }}
+                            </div>
+                        {% endif %}
+                    </a>
+                </div>
+                    
+            {% endcase %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+<style>
+    {% if section.settings.parent_head == "" %}
+        #mega-menu__{{ section.id }}{
+            display: none;
+        }
+    {% endif %}
+</style>
+{% schema %}
+{
+    "name": "Mega menu 1",
+    "class": "section-mega-menu-1",
+    "settings": [
+        {
+            "type": "text",
+            "id": "parent_head",
+            "label": "Parent link title"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "menu",
+            "name": "Menu",
+            "settings": [
+                {
+                    "type": "link_list",
+                    "id": "block_menu",
+                    "label": "Menu"
+                }
+            ]
+        },
+        {
+            "type": "content",
+            "name": "Image with content",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Image"
+                },
+                {
+                    "type": "textarea",
+                    "id": "content",
+                    "label": "Content"
+                },
+                {
+                    "type": "url",
+                    "id": "cta_link",
+                    "label": "Button url"
+                },
+                {
+                    "type": "text",
+                    "id": "cta_text",
+                    "label": "Button text"
+                }
+            ]
+        },
+        {
+            "type": "product",
+            "name": "Product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "block_product",
+                    "label": "Product"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

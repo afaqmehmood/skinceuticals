@@ -1,0 +1,46 @@
+<div class="nav-tabs-wrapper container mb-5 py-5">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="desciption" aria-selected="true">  {{ 'products.product.rate_description' | t }}</button>
+        </li>
+       <li class="nav-item" role="presentation">
+          <button class="nav-link" id="visible-results-tab" data-bs-toggle="tab" data-bs-target="#visible-results" type="button" role="tab" aria-controls="visible-results" aria-selected="false">  {{ 'products.product.rate_visible_results' | t }}</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="how-to-use-tab" data-bs-toggle="tab" data-bs-target="#how-to-use" type="button" role="tab" aria-controls="how-to-use" aria-selected="false">  {{ 'products.product.rate_how_to_use' | t }}</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="science-and-proof-tab" data-bs-toggle="tab" data-bs-target="#science-and-proof" type="button" role="tab" aria-controls="science-and-proof" aria-selected="false">  {{ 'products.product.rate_science_and_proof' | t }}</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ingredients-tab" data-bs-toggle="tab" data-bs-target="#ingredients" type="button" role="tab" aria-controls="ingredients" aria-selected="false">  {{ 'products.product.rate_key_ingredients' | t }}</button>
+          </li>
+       
+      </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active py-5 px-4" id="description" role="tabpanel" aria-labelledby="description-tab">
+            <div class="row description-row">
+              <div class="col-md-6 col-12">
+                {{ product.metafields["global"]["description_column_1"] }}
+              </div>
+              <div class="col-md-6 col-12">
+                {{ product.metafields["global"]["description_column_2"] }}
+              </div>
+            </div>
+        </div>
+       <div class="tab-pane fade py-5 px-4" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
+            {{ product.metafields["global"]["ingredients"] }}
+        </div>
+        <div class="tab-pane fade py-5 px-4" id="visible-results" role="tabpanel" aria-labelledby="visible-results-tab">
+            {{ product.metafields["global"]["visible_results"] }}
+        </div>
+        <div class="tab-pane fade py-5 px-4" id="science-and-proof" role="tabpanel" aria-labelledby="science-and-proof-tab">
+            {{ product.metafields["global"]["science_and_proof"] }}
+        </div>
+        <div class="tab-pane fade py-5 px-4" id="how-to-use" role="tabpanel" aria-labelledby="how-to-use-tab">
+            {{ product.metafields["global"]["how_to_use"] }}
+        </div>
+       
+    </div>
+</div>
